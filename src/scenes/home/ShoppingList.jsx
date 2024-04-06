@@ -6,6 +6,7 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { setItems } from "../../state";
+import { Link } from 'react-router-dom';
 
 const ShoppingList = () => {
     const dispatch = useDispatch();
@@ -57,7 +58,9 @@ const ShoppingList = () => {
             >
                 <Masonry gutter={"20px"}>
                     {items.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
+                        <Link to={`/item/${image?.attributes?.image?.data?.id}`}>
                             <img key={index} src={image?.attributes?.image?.data?.attributes?.url} alt={`gallery-item-${index}`}/>
+                        </Link>
                         )
                     )}
                 </Masonry>

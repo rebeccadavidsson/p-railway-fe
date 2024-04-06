@@ -1,5 +1,4 @@
 import ShoppingList from "./ShoppingList";
-import Subscribe from "./Subscribe";
 
 function Home() {
   return (

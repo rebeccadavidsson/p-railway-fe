@@ -15,6 +15,7 @@ const ItemDetails = () => {
     const [value, setValue] = useState("description");
     const [count, setCount] = useState(0);
     const [item, setItem] = useState(null);
+    const [images, setImages] = useState([]);
     const [items, setItems] = useState([]);
 
     const handleChange = (event, newValue) => {
@@ -30,8 +31,14 @@ const ItemDetails = () => {
             }
         );
         const itemJson = await item.json();
+        if (itemJson.data) {
+            const imagesArray = [itemJson.data.attributes.image.data];
+            if (itemJson.data?.attributes?.subimages.length > 0) {
+                imagesArray.push(itemJson.data.attributes.subimages.data);
+            }
+            setImages(imagesArray);
+        }
         setItem(itemJson.data);
-        console.log(itemJson.data, "itemJson.data")
     }
 
     // TODO: why both?
@@ -59,7 +66,7 @@ const ItemDetails = () => {
 
                 <Box flex="1 1 40%" mb="0">
                     {item?.attributes &&
-                        <MainCarousel images={[item?.attributes?.image?.data, ...item?.attributes?.subimages?.data]}/>
+                        <MainCarousel images={images}/>
                     }
                 </Box>
 
