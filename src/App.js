@@ -21,21 +21,21 @@ const ScrollToTop = () => {
 
 function App() {
   return (
-    <div className="app">
+    <div className="app flex flex-col min-h-screen">
       <BrowserRouter>
-        <Navbar />
-        <ScrollToTop />
+        <Navbar/>
+        <ScrollToTop/>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="item/:itemId" element={<ItemDetails />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="checkout/success" element={<Confirmation />} />
-          <Route path="terms-and-conditions" element={<Page id={1} />} />
-          <Route path="privacy" element={<Page id={2} />} />
-          <Route path="about" element={<Page id={3} />} />
+          <Route path="/" element={<Home/>}/>
+          <Route path="item/:itemId" element={<ItemDetails/>}/>
+          <Route path="checkout" element={<Checkout/>}/>
+          <Route path="checkout/success" element={<Confirmation/>}/>
+          <Route path="terms-and-conditions" element={<Page id={1}/>}/>
+          <Route path="privacy" element={<Page id={2}/>}/>
+          <Route path="about" element={<Page id={3}/>}/>
         </Routes>
-        <CartMenu />
-        <Footer />
+        <CartMenu/>
+        <Footer className="mt-auto"/>
       </BrowserRouter>
     </div>
   );

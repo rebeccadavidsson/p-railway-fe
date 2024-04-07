@@ -10,7 +10,7 @@ export const Page = ({id}) => {
 
     async function getData() {
         const response = await fetch(
-            "http://localhost:1337/api/pages/" + id,
+            `${process.env.REACT_APP_API_URL}/api/pages/` + id,
             {method: "GET"}
         );
         const data = await response.json();

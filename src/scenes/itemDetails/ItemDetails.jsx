@@ -9,6 +9,7 @@ import { addToCart } from "../../state";
 import { useDispatch } from "react-redux";
 import MainCarousel from "../home/MainCarousel";
 
+
 const ItemDetails = () => {
     const dispatch = useDispatch();
     const {itemId} = useParams();
@@ -23,9 +24,8 @@ const ItemDetails = () => {
     };
 
     async function getItem() {
-        // TODO replace localhost
         const item = await fetch(
-            `http://localhost:1337/api/items/${itemId}?populate=image&populate=subimages`,
+            `${process.env.REACT_APP_API_URL}/api/items/${itemId}?populate=image&populate=subimages`,
             {
                 method: "GET",
             }
@@ -41,10 +41,9 @@ const ItemDetails = () => {
         setItem(itemJson.data);
     }
 
-    // TODO: why both?
     async function getItems() {
         const items = await fetch(
-            `http://localhost:1337/api/items?populate=image&populate=subimages`,
+            `${process.env.REACT_APP_API_URL}/api/items?populate=image&populate=subimages`,
             {
                 method: "GET",
             }
