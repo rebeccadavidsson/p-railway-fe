@@ -9,7 +9,7 @@ import Shipping from "./Shipping";
 import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(
-  "pk_test_51LgU7yConHioZHhlAcZdfDAnV9643a7N1CMpxlKtzI1AUWLsRyrord79GYzZQ6m8RzVnVQaHsgbvN1qSpiDegoPi006QkO0Mlc"
+  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 );
 
 const Checkout = () => {
@@ -38,12 +38,14 @@ const Checkout = () => {
 
   async function makePayment(values) {
     const stripe = await stripePromise;
+    console.log(cart, "cart")
     const requestBody = {
       userName: [values.firstName, values.lastName].join(" "),
       email: values.email,
-      products: cart.map(({ id, count }) => ({
+      products: cart.map(({ id, count, attributes }) => ({
         id,
         count,
+        name: attributes.name
       })),
     };
 
@@ -51,11 +53,11 @@ const Checkout = () => {
         `${process.env.REACT_APP_API_URL}/api/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify({data: requestBody}),
     });
     const session = await response.json();
     await stripe.redirectToCheckout({
-      sessionId: session.id,
+      sessionId: session.sessionId
     });
   }
 
@@ -155,7 +157,6 @@ const initialValues = {
     street1: "",
     street2: "",
     city: "",
-    state: "",
     zipCode: "",
   },
   shippingAddress: {
@@ -166,7 +167,6 @@ const initialValues = {
     street1: "",
     street2: "",
     city: "",
-    state: "",
     zipCode: "",
   },
   email: "",
@@ -182,7 +182,6 @@ const checkoutSchema = [
       street1: yup.string().required("required"),
       street2: yup.string(),
       city: yup.string().required("required"),
-      state: yup.string().required("required"),
       zipCode: yup.string().required("required"),
     }),
     shippingAddress: yup.object().shape({
@@ -205,10 +204,6 @@ const checkoutSchema = [
       }),
       street2: yup.string(),
       city: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      state: yup.string().when("isSameAddress", {
         is: false,
         then: yup.string().required("required"),
       }),

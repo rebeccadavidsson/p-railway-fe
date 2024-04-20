@@ -13,22 +13,11 @@ function Footer() {
         width="80%"
         margin="auto"
         display="flex"
-        justifyContent="space-between"
         flexWrap="wrap"
-        rowGap="30px"
-        columnGap="clamp(20px, 30px, 40px)"
+        rowGap="50px"
+        columnGap="50px"
+        className={'md:justify-end'}
       >
-        <Box className={'sm:w-40'}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            mb="30px"
-            color={shades.secondary[500]}
-          >
-            Philip Davidsson
-          </Typography>
-
-        </Box>
 
         <Box>
           <Typography variant="h4" fontWeight="bold" mb="30px">

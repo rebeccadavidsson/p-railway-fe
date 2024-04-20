@@ -4,7 +4,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const MainCarousel = ({images}) => {
     // const isNonMobile = useMediaQuery("(min-width:600px)");
-    console.log(images, "images")
+
     return (
         <Carousel>
             {images.map((image, index) => (
