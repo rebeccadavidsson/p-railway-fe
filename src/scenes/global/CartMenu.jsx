@@ -1,13 +1,9 @@
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import styled from "@emotion/styled";
 import { shades } from "../../theme";
 import {
-  decreaseCount,
-  increaseCount,
   removeFromCart,
   setIsCartOpen,
 } from "../../state";
@@ -26,7 +22,7 @@ const CartMenu = () => {
   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
 
   const totalPrice = cart.reduce((total, item) => {
-    return total + item.count * item.attributes.price;
+    return total + 1 * item.attributes.price;
   }, 0);
 
   return (
@@ -45,9 +41,9 @@ const CartMenu = () => {
         position="fixed"
         right="0"
         bottom="0"
-        width="max(400px, 30%)"
         height="100%"
         backgroundColor="white"
+        className={'max-w-full sm:max-w-screen-sm'}
       >
         <Box padding="30px" overflow="auto" height="100%">
           {/* HEADER */}
@@ -62,8 +58,8 @@ const CartMenu = () => {
           <Box>
             {cart.map((item) => (
               <Box key={`${item.attributes.name}-${item.id}`}>
-                <FlexBox p="15px 0">
-                  <Box flex="1 1 40%">
+                <FlexBox p="15px 0" className={'gap-5 items-baseline flex-col sm:flex-row'}>
+                  <Box className={'self-baseline mt-2'}>
                     <img
                       alt={item?.name}
                       width="123px"
@@ -71,7 +67,7 @@ const CartMenu = () => {
                       src={item?.attributes?.image?.data?.attributes?.formats?.medium?.url}
                     />
                   </Box>
-                  <Box flex="1 1 60%">
+                  <Box flex="1 1 60%" className={'w-full'}>
                     <FlexBox mb="5px">
                       <Typography fontWeight="bold">
                         {item.attributes.name}
@@ -86,27 +82,6 @@ const CartMenu = () => {
                     </FlexBox>
                     <Typography>{item.attributes.description}</Typography>
                     <FlexBox m="15px 0">
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        border={`1.5px solid ${shades.neutral[500]}`}
-                      >
-                        <IconButton
-                          onClick={() =>
-                            dispatch(decreaseCount({ id: item.id }))
-                          }
-                        >
-                          <RemoveIcon />
-                        </IconButton>
-                        <Typography>{item.count}</Typography>
-                        <IconButton
-                          onClick={() =>
-                            dispatch(increaseCount({ id: item.id }))
-                          }
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </Box>
                       <Typography fontWeight="bold">
                         €{item.attributes.price}
                       </Typography>
@@ -129,9 +104,13 @@ const CartMenu = () => {
                 backgroundColor: shades.primary[400],
                 color: "white",
                 borderRadius: 0,
-                minWidth: "100%",
+                width: "100%",
                 padding: "20px 40px",
                 m: "20px 0",
+                ':hover': {
+                  backgroundColor: 'neutral.dark',
+                  color: 'white',
+                },
               }}
               onClick={() => {
                 navigate("/checkout");
