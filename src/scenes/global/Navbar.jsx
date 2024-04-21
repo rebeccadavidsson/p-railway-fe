@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Box, IconButton } from "@mui/material";
+import { Badge, Box, Drawer, IconButton, List, ListItem, ListItemText } from "@mui/material";
 import {
   ShoppingBagOutlined,
   MenuOutlined,
@@ -7,11 +7,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import { shades } from "../../theme";
 import { setIsCartOpen } from "../../state";
+import { useState } from 'react';
 
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const toggleDrawer = (open) => () => {
+    setOpenMenu(open);
+  };
 
   return (
     <Box
@@ -19,7 +25,7 @@ function Navbar() {
       alignItems="center"
       width="100%"
       height="60px"
-      backgroundColor="rgba(255, 255, 255, 0.95)"
+      backgroundColor="white"
       color="black"
       position="fixed"
       top="0"
@@ -68,8 +74,22 @@ function Navbar() {
             </IconButton>
           </Badge>
           <IconButton sx={{ color: "black" }}>
-            <MenuOutlined />
+            <MenuOutlined onClick={toggleDrawer(true)} />
           </IconButton>
+          <Drawer anchor="right" open={openMenu} onClose={toggleDrawer(false)}>
+            <List>
+              {[
+                { text: 'Home', link: '/home' },
+                { text: 'About Me', link: '/about' },
+                { text: 'Terms & Conditions', link: '/terms-and-conditions' },
+                { text: 'Privacy Policy', link: '/privacy' }
+              ].map(({ text, link }, index) => (
+                  <ListItem button key={text} component="a" href={link} onClick={toggleDrawer(false)}>
+                    <ListItemText primary={text} />
+                  </ListItem>
+              ))}
+            </List>
+          </Drawer>
         </Box>
       </Box>
     </Box>

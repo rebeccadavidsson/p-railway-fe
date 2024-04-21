@@ -8,6 +8,8 @@ import CartMenu from "./scenes/global/CartMenu";
 import Checkout from "./scenes/checkout/Checkout";
 import Confirmation from "./scenes/checkout/Confirmation";
 import { Page } from './scenes/page/Page';
+import SuccessPage from './scenes/checkout/SuccessPage';
+import NotFound from './scenes/page/NotFound';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -33,6 +35,10 @@ function App() {
           <Route path="terms-and-conditions" element={<Page id={1}/>}/>
           <Route path="privacy" element={<Page id={2}/>}/>
           <Route path="about" element={<Page id={3}/>}/>
+          <Route path="success" element={<SuccessPage />}/>
+          {/* 404 Page */}
+          <Route path="*" element={<NotFound />} />
+          <Route path="/not-found" element={<NotFound />} />
         </Routes>
         <CartMenu/>
         <Footer className="mt-auto"/>
