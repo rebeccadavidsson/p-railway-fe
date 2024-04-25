@@ -84,19 +84,19 @@ const ShoppingList = () => {
                 unmountOnExit
             >
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{350: 2, 750: 3}}
+                    columnsCountBreakPoints={{350: 2, 750: 2}}
                 >
                     <Masonry gutter={"10px"}>
                         {items.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
                             <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
                                 <LazyLoad once>
                                     <img
-                                        className="transition duration-300 ease-in-out transform hover:scale-110 hover:border-gray-400 hover:shadow-lg"
-                                        src={image?.attributes?.image?.data?.attributes?.formats?.small?.url}
-                                        alt={image?.attributes?.image?.data?.attributes?.name}
+                                        className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"
+                                        src={image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url}
+                                        alt={image?.attributes?.name}
                                         data-srcset={`
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url} 187w,
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url} 500w,
+                                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url} 187w,
+                                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url ?? image?.attributes?.image?.data?.attributes?.url} 500w,
                                           ${image?.attributes?.image?.data?.attributes?.url} 1000w
                                         `}
                                         sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"

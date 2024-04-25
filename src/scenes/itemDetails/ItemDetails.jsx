@@ -28,8 +28,8 @@ const ItemDetails = () => {
         const itemJson = await item.json();
         if (itemJson.data) {
             const imagesArray = [itemJson.data.attributes.image.data];
-            if (itemJson.data?.attributes?.subimages.length > 0) {
-                imagesArray.push(itemJson.data.attributes.subimages.data);
+            if (itemJson.data?.attributes?.subimages?.data?.length > 0) {
+                imagesArray.push(...itemJson.data.attributes.subimages.data);
             }
             setImages(imagesArray);
         }
