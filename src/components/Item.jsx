@@ -31,14 +31,13 @@ const Item = ({ item, width }) => {
                         alt={name}
                         width="300px"
                         height="400px"
-                        src={image.data.attributes.formats.thumbnail.url} // Thumbnail as low-quality preview
+                        src={image.data.attributes.formats.small.url}
                         data-srcset={`
-                          ${image.data.attributes.formats.thumbnail.url} 187w,
-                          ${image.data.attributes.formats.small.url} 500w,
-                          ${image.data.attributes.formats.medium.url} 750w,
-                          ${image.data.attributes.url} 1000w
+                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url} 187w,
+                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url} 500w,
+                          ${image?.attributes?.image?.data?.attributes?.url} 1000w
                         `}
-                        sizes="(max-width: 600px) 80vw, (max-width: 1024px) 50vw, 1000px"
+                        sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
                         onClick={() => navigate(`/item/${item.id}`)}
                         style={{cursor: "pointer"}}
                         loading="lazy"

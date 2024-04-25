@@ -41,7 +41,7 @@ const ShoppingList = () => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Box width="80%" margin="80px auto">
+        <Box className={'m-auto mt-20 ml-4 mr-4'}>
             <img alt={'logo'} src={'logo.png'} className={'max-w-[300px] m-auto'}/>
             <Tabs
                 textColor="primary"
@@ -84,24 +84,23 @@ const ShoppingList = () => {
                 unmountOnExit
             >
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{350: 2, 750: 2}}
+                    columnsCountBreakPoints={{350: 2, 750: 3}}
                 >
-                    <Masonry gutter={"20px"}>
+                    <Masonry gutter={"10px"}>
                         {items.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
                             <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
-                                <LazyLoad height={400} once>
+                                <LazyLoad once>
                                     <img
                                         className="transition duration-300 ease-in-out transform hover:scale-110 hover:border-gray-400 hover:shadow-lg"
-                                        src={image?.attributes?.image?.data?.attributes?.formats?.thumbnail?.url}
-                                        alt={`gallery-item-${index}`}
+                                        src={image?.attributes?.image?.data?.attributes?.formats?.small?.url}
+                                        alt={image?.attributes?.image?.data?.attributes?.name}
                                         data-srcset={`
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.thumbnail?.url} 187w,
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url} 500w,
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url} 750w,
+                                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url} 187w,
+                                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url} 500w,
                                           ${image?.attributes?.image?.data?.attributes?.url} 1000w
                                         `}
-                                        sizes="(max-width: 600px) 80vw, (max-width: 1024px) 50vw, 1000px"
-                                        style={{cursor: "pointer"}}
+                                        sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
+                                        style={{cursor: "pointer", width: "100%"}}
                                         loading="lazy"
                                     />
                                 </LazyLoad>
