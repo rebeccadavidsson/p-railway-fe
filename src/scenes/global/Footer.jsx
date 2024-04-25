@@ -16,7 +16,7 @@ function Footer() {
         flexWrap="wrap"
         rowGap="50px"
         columnGap="50px"
-        className={'md:justify-end'}
+        className={'md:justify-end max-w-4xl'}
       >
 
         <Box>

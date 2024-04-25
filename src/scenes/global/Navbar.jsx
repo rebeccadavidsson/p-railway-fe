@@ -21,15 +21,13 @@ function Navbar() {
 
   return (
     <Box
+      className={'max-w-4xl m-auto'}
       display="flex"
       alignItems="center"
       width="100%"
       height="60px"
       backgroundColor="white"
       color="black"
-      position="fixed"
-      top="0"
-      left="0"
       zIndex="1"
     >
       <Box
