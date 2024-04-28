@@ -27,7 +27,7 @@ function App() {
       <BrowserRouter>
         <Navbar/>
         <ScrollToTop/>
-        <Routes>
+        <Routes className="flex-grow">
           <Route path="/" element={<Home/>}/>
           <Route path="item/:itemId" element={<ItemDetails/>}/>
           <Route path="checkout" element={<Checkout/>}/>

@@ -1,22 +1,29 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, Button } from "@mui/material";
 import { shades } from "../theme";
-import { addToCart } from "../state";
+import { addToCart, removeFromCart } from "../state";
 import { useNavigate } from "react-router-dom";
 import LazyLoad from 'react-lazyload';
 
 const Item = ({ item, width }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [count, setCount] = useState(1);
+  const count = 1;
   const [isHovered, setIsHovered] = useState(false);
+
+  const cart = useSelector((state) => state.cart.cart);
+  const isInCart = cart.some(cartItem => cartItem.id === item.id);
 
   const { category, price, name, image } = item.attributes;
 
-  const handleClick = () => {
-    dispatch(addToCart({ item: { ...item, count } }));
-  };
+    const handleClick = () => {
+        if (isInCart) {
+            dispatch(removeFromCart({id: item.id}));
+        } else {
+            dispatch(addToCart({ item: { ...item, count } }));
+        }
+    };
 
   return (
       <Box width={width}>
@@ -53,12 +60,12 @@ const Item = ({ item, width }) => {
               padding="0 5%"
           >
             <Box>
-              <Button
-                  onClick={handleClick}
-                  sx={{ backgroundColor: shades.primary[300], color: "white" }}
-              >
-                Add to Cart
-              </Button>
+                <Button
+                    onClick={handleClick}
+                    sx={{ backgroundColor: shades.primary[300], color: "white" }}
+                >
+                    {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+                </Button>
             </Box>
           </Box>
         </Box>

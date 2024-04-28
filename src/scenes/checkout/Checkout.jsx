@@ -1,38 +1,27 @@
 import { useSelector } from "react-redux";
 import { Box, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { Formik } from "formik";
-import { useState } from "react";
 import * as yup from "yup";
 import { shades } from "../../theme";
 import Payment from "./Payment";
-import Shipping from "./Shipping";
 import { loadStripe } from "@stripe/stripe-js";
+import { useState } from 'react';
 
 const stripePromise = loadStripe(
   process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 );
 
 const Checkout = () => {
-  const [activeStep, setActiveStep] = useState(0);
   const cart = useSelector((state) => state.cart.cart);
-  const isFirstStep = activeStep === 0;
-  const isSecondStep = activeStep === 1;
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleFormSubmit = async (values, actions) => {
-    setActiveStep(activeStep + 1);
-
-    // this copies the billing address onto shipping address
-    if (isFirstStep && values.shippingAddress.isSameAddress) {
-      actions.setFieldValue("shippingAddress", {
-        ...values.billingAddress,
-        isSameAddress: true,
-      });
+    if (cart.length === 0) {
+      setErrorMessage('Your cart is empty. Please add items to your cart before proceeding to checkout.');
+      return;
     }
 
-    if (isSecondStep) {
-      makePayment(values);
-    }
-
+    makePayment(values);
     actions.setTouched({});
   };
 
@@ -40,7 +29,6 @@ const Checkout = () => {
     const stripe = await stripePromise;
 
     const requestBody = {
-      userName: [values.firstName, values.lastName].join(" "),
       email: values.email,
       products: cart.map(({ id, count, attributes }) => ({
         id,
@@ -64,10 +52,16 @@ const Checkout = () => {
   }
 
   return (
-    <Box width="80%" m="100px auto">
-      <Stepper activeStep={activeStep} sx={{ m: "20px 0" }}>
+    <Box className={'md:w-1/2 max-w-4xl pl-10 pr-10'} m="100px auto">
+      {errorMessage && (
+          <div className="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded relative"
+               role="alert">
+            <span className="block sm:inline"> {errorMessage}</span>
+          </div>
+      )}
+      <Stepper sx={{m: "20px 0"}}>
         <Step>
-          <StepLabel>Billing</StepLabel>
+          <StepLabel>Contact Information</StepLabel>
         </Step>
         <Step>
           <StepLabel>Payment</StepLabel>
@@ -77,7 +71,7 @@ const Checkout = () => {
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
-          validationSchema={checkoutSchema[activeStep]}
+          validationSchema={checkoutSchema}
         >
           {({
             values,
@@ -89,44 +83,16 @@ const Checkout = () => {
             setFieldValue,
           }) => (
             <form onSubmit={handleSubmit}>
-              {isFirstStep && (
-                <Shipping
-                  values={values}
-                  errors={errors}
-                  touched={touched}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
-                />
-              )}
-              {isSecondStep && (
-                <Payment
-                  values={values}
-                  errors={errors}
-                  touched={touched}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
-                />
-              )}
+              <Payment
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                setFieldValue={setFieldValue}
+              />
+
               <Box display="flex" justifyContent="space-between" gap="50px">
-                {!isFirstStep && (
-                  <Button
-                    fullWidth
-                    color="primary"
-                    variant="contained"
-                    sx={{
-                      backgroundColor: shades.primary[200],
-                      boxShadow: "none",
-                      color: "white",
-                      borderRadius: 0,
-                      padding: "15px 40px",
-                    }}
-                    onClick={() => setActiveStep(activeStep - 1)}
-                  >
-                    Back
-                  </Button>
-                )}
                 <Button
                   fullWidth
                   type="submit"
@@ -140,7 +106,7 @@ const Checkout = () => {
                     padding: "15px 40px",
                   }}
                 >
-                  {!isSecondStep ? "Next" : "Place Order"}
+                  Next
                 </Button>
               </Box>
             </form>
@@ -152,73 +118,13 @@ const Checkout = () => {
 };
 
 const initialValues = {
-  billingAddress: {
-    firstName: "",
-    lastName: "",
-    country: "",
-    street1: "",
-    street2: "",
-    city: "",
-    zipCode: "",
-  },
-  shippingAddress: {
-    isSameAddress: true,
-    firstName: "",
-    lastName: "",
-    country: "",
-    street1: "",
-    street2: "",
-    city: "",
-    zipCode: "",
-  },
   email: "",
   phoneNumber: "",
 };
 
-const checkoutSchema = [
-  yup.object().shape({
-    billingAddress: yup.object().shape({
-      firstName: yup.string().required("required"),
-      lastName: yup.string().required("required"),
-      country: yup.string().required("required"),
-      street1: yup.string().required("required"),
-      street2: yup.string(),
-      city: yup.string().required("required"),
-      zipCode: yup.string().required("required"),
-    }),
-    shippingAddress: yup.object().shape({
-      isSameAddress: yup.boolean(),
-      firstName: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      lastName: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      country: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      street1: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      street2: yup.string(),
-      city: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-      zipCode: yup.string().when("isSameAddress", {
-        is: false,
-        then: yup.string().required("required"),
-      }),
-    }),
-  }),
-  yup.object().shape({
-    email: yup.string().required("required"),
-    phoneNumber: yup.string().required("required"),
-  }),
-];
+const checkoutSchema = yup.object().shape({
+  email: yup.string().required("required"),
+  phoneNumber: yup.string().required("required"),
+})
 
 export default Checkout;

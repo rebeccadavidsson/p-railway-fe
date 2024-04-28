@@ -43,7 +43,7 @@ const CartMenu = () => {
         bottom="0"
         height="100%"
         backgroundColor="white"
-        className={'max-w-full sm:max-w-screen-sm'}
+        className={'max-w-full sm:max-w-screen-sm w-full sm:w-2/4 lg:w-1/3'}
       >
         <Box padding="30px" overflow="auto" height="100%">
           {/* HEADER */}

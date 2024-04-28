@@ -2,8 +2,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Item from "../../components/Item";
-import { addToCart } from "../../state";
-import { useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../../state";
+import { useDispatch, useSelector } from "react-redux";
 import MainCarousel from "../home/MainCarousel";
 import { CSSTransition } from 'react-transition-group';
 
@@ -11,12 +11,14 @@ import { CSSTransition } from 'react-transition-group';
 const ItemDetails = () => {
     const dispatch = useDispatch();
     const {itemId} = useParams();
-    const [count, setCount] = useState(0);
+    const count = 1;
     const [item, setItem] = useState(null);
     const [images, setImages] = useState([]);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showContent, setShowContent] = useState(false);
+    const cart = useSelector((state) => state.cart.cart);
+    const isInCart = cart.some(cartItem => cartItem.id === item.id);
 
     async function getItem() {
         const item = await fetch(
@@ -60,7 +62,7 @@ const ItemDetails = () => {
     }, [itemId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className="transition-opacity duration-500 ease-in-out" style={{opacity: loading ? 0.5 : 1}}>
+        <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto" style={{opacity: loading ? 0.5 : 1}}>
             <Box width="80%" m="80px auto">
                 {loading ? (
                     <div className="flex items-center justify-center h-screen">
@@ -103,9 +105,9 @@ const ItemDetails = () => {
                                                     color: 'white',
                                                 },
                                             }}
-                                            onClick={() => dispatch(addToCart({item: {...item, count}}))}
+                                            onClick={() => isInCart ? dispatch(removeFromCart({id: item?.id})) : dispatch(addToCart({item: {...item, count}}))}
                                         >
-                                            ADD TO CART
+                                            {isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'}
                                         </Button>
                                     </Box>
                                 </Box>
@@ -119,8 +121,8 @@ const ItemDetails = () => {
                                     mt="20px"
                                     display="flex"
                                     flexWrap="wrap"
-                                    columnGap="1.33%"
                                     justifyContent="flex-start"
+                                    className={'gap-5'}
                                 >
                                     {items.slice(0, 4).map((item, i) => (
                                         <Item key={`${item.name}-${i}`} item={item}/>

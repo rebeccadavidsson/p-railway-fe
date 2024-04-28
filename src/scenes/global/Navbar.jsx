@@ -21,7 +21,7 @@ function Navbar() {
 
   return (
     <Box
-      className={'max-w-4xl m-auto'}
+      className={'max-w-4xl m-auto mt-0 mb-0'}
       display="flex"
       alignItems="center"
       width="100%"
@@ -74,15 +74,28 @@ function Navbar() {
           <IconButton sx={{ color: "black" }}>
             <MenuOutlined onClick={toggleDrawer(true)} />
           </IconButton>
-          <Drawer anchor="right" open={openMenu} onClose={toggleDrawer(false)}>
+          <Drawer
+              anchor="right"
+              open={openMenu}
+              onClose={toggleDrawer(false)}
+              sx={{
+                '& .MuiDrawer-paper': {
+                  width: {
+                    xs: '70%',
+                    sm: '40%',
+                    md: '30%',
+                  },
+                },
+              }}
+          >
             <List>
               {[
                 { text: 'Home', link: '/home' },
                 { text: 'About Me', link: '/about' },
                 { text: 'Terms & Conditions', link: '/terms-and-conditions' },
                 { text: 'Privacy Policy', link: '/privacy' }
-              ].map(({ text, link }, index) => (
-                  <ListItem button key={text} component="a" href={link} onClick={toggleDrawer(false)}>
+              ].map(({ text, link }) => (
+                  <ListItem key={text} component="a" href={link} onClick={toggleDrawer(false)}>
                     <ListItemText primary={text} />
                   </ListItem>
               ))}

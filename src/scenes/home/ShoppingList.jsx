@@ -32,7 +32,7 @@ const ShoppingList = () => {
         } catch (error) {
             console.error("Error fetching items:", error);
         } finally {
-            setLoading(false); // Set loading state to false regardless of success or failure
+            setLoading(false);
         }
     }
 
@@ -43,6 +43,8 @@ const ShoppingList = () => {
     return (
         <Box className={'m-auto mt-20 ml-4 mr-4'}>
             <img alt={'logo'} src={'logo.png'} className={'max-w-[300px] m-auto'}/>
+
+            {/*// A search bar that searches on the title of the item*/}
             <Tabs
                 textColor="primary"
                 indicatorColor="primary"

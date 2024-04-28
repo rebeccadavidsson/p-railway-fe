@@ -1,6 +1,5 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
-import { shades } from "../../theme";
 import { Link } from "react-router-dom";
 
 function Footer() {
@@ -8,7 +7,7 @@ function Footer() {
     palette: { neutral },
   } = useTheme();
   return (
-    <Box marginTop="70px" padding="40px 0" backgroundColor={neutral.light}>
+    <Box padding="40px 0" backgroundColor={neutral.light} className={'flex-auto'}>
       <Box
         width="80%"
         margin="auto"
@@ -16,9 +15,8 @@ function Footer() {
         flexWrap="wrap"
         rowGap="50px"
         columnGap="50px"
-        className={'md:justify-end max-w-4xl'}
+        className={'max-w-3xl'}
       >
-
         <Box>
           <Typography variant="h4" fontWeight="bold" mb="30px">
             About
@@ -39,7 +37,7 @@ function Footer() {
             Tel: +31 6 29391304
           </Typography>
           <Typography mb="30px" sx={{ wordWrap: "break-word" }}>
-            Email: philipdavidssoncontact@gmail.com
+            philipdavidssoncontact@gmail.com
           </Typography>
         </Box>
       </Box>
