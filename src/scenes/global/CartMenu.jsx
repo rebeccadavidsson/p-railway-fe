@@ -18,10 +18,10 @@ const FlexBox = styled(Box)`
 const CartMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cart);
-  const isCartOpen = useSelector((state) => state.cart.isCartOpen);
+  const cart = useSelector((state) => state.cart);
+  const isCartOpen = useSelector((state) => state.isCartOpen);
 
-  const totalPrice = cart.reduce((total, item) => {
+  const totalPrice = cart?.reduce((total, item) => {
     return total + 1 * item.attributes.price;
   }, 0);
 
@@ -48,7 +48,7 @@ const CartMenu = () => {
         <Box padding="30px" overflow="auto" height="100%">
           {/* HEADER */}
           <FlexBox mb="15px">
-            <Typography variant="h3">SHOPPING CART ({cart.length})</Typography>
+            <Typography variant="h3">SHOPPING CART ({cart?.length})</Typography>
             <IconButton onClick={() => dispatch(setIsCartOpen({}))}>
               <CloseIcon />
             </IconButton>
@@ -56,7 +56,7 @@ const CartMenu = () => {
 
           {/* CART LIST */}
           <Box>
-            {cart.map((item) => (
+            {cart?.map((item) => (
               <Box key={`${item.attributes.name}-${item.id}`}>
                 <FlexBox p="15px 0" className={'gap-5 items-baseline flex-col sm:flex-row'}>
                   <Box className={'self-baseline mt-2'}>

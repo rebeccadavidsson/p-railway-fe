@@ -17,8 +17,8 @@ const ItemDetails = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showContent, setShowContent] = useState(false);
-    const cart = useSelector((state) => state.cart.cart);
-    const isInCart = cart.some(cartItem => cartItem.id === item.id);
+    const cart = useSelector((state) => state.cart);
+    const isInCart = cart?.some(cartItem => cartItem?.id === item?.id);
 
     async function getItem() {
         const item = await fetch(

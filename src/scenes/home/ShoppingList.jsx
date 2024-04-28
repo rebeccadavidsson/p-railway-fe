@@ -14,14 +14,20 @@ const ShoppingList = () => {
     const dispatch = useDispatch();
     const [value, setValue] = useState("all");
     const [loading, setLoading] = useState(true); // State to control loading visibility
-    const items = useSelector((state) => state.cart.items);
+    const items = useSelector((state) => state.items ?? []);
     const breakPoint = useMediaQuery("(min-width:600px)");
+    const cachedItems = useSelector((state) => state.items);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     async function getItems() {
+        if (cachedItems !== undefined && cachedItems?.length > 0) {
+            dispatch(setItems(cachedItems));
+            setLoading(false);
+        }
+
         try {
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL}/api/items?populate=image`,
@@ -68,12 +74,13 @@ const ShoppingList = () => {
                 in={loading} // Show loader when loading state is true
                 classNames="fade"
                 unmountOnExit
+                timeout={0}
             >
                 <div className="relative mt-8">
                     <div className="inset-0 flex items-center justify-center">
-                        <div className="text-center p-8 rounded-lg shadow-lg bg-gray-100">
+                        <div className="text-center p-8 rounded-lg">
                             <p className="text-lg mb-4">Loading items...</p>
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700 m-auto"></div>
+                            <div className="loader m-auto"></div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +96,7 @@ const ShoppingList = () => {
                     columnsCountBreakPoints={{350: 2, 750: 2}}
                 >
                     <Masonry gutter={"10px"}>
-                        {items.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
+                        {items?.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
                             <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
                                 <LazyLoad once>
                                     <img

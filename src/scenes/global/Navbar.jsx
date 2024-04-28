@@ -12,12 +12,16 @@ import { useState } from 'react';
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state.cart);
   const [openMenu, setOpenMenu] = useState(false);
 
   const toggleDrawer = (open) => () => {
     setOpenMenu(open);
   };
+
+  const handleSetIsCartOpen = () => {
+    dispatch(setIsCartOpen({}));
+  }
 
   return (
     <Box
@@ -38,7 +42,6 @@ function Navbar() {
         alignItems="center"
       >
         <Box
-            onClick={() => navigate("/")}
             sx={{"&:hover": {cursor: "pointer"}}}
             color={shades.secondary[500]}
         >
@@ -51,9 +54,9 @@ function Navbar() {
           zIndex="2"
         >
           <Badge
-            badgeContent={cart.length}
+            badgeContent={cart?.length}
             color="secondary"
-            invisible={cart.length === 0}
+            invisible={cart?.length === 0}
             sx={{
               "& .MuiBadge-badge": {
                 right: 5,
@@ -65,7 +68,7 @@ function Navbar() {
             }}
           >
             <IconButton
-              onClick={() => dispatch(setIsCartOpen({}))}
+              onClick={handleSetIsCartOpen}
               sx={{ color: "black" }}
             >
               <ShoppingBagOutlined />

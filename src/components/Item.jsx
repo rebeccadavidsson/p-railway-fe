@@ -12,7 +12,7 @@ const Item = ({ item, width }) => {
   const count = 1;
   const [isHovered, setIsHovered] = useState(false);
 
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state.cart);
   const isInCart = cart.some(cartItem => cartItem.id === item.id);
 
   const { category, price, name, image } = item.attributes;

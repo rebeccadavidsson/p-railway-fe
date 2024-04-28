@@ -1,4 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
+import { createSlice, configureStore } from "@reduxjs/toolkit";
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
 
 const initialState = {
   isCartOpen: false,
@@ -15,7 +23,6 @@ export const cartSlice = createSlice({
     },
 
     addToCart: (state, action) => {
-      console.log(action.payload.item)
       state.cart = [...state.cart, action.payload.item];
     },
 
@@ -56,4 +63,9 @@ export const {
   setIsCartOpen,
 } = cartSlice.actions;
 
+const persistedReducer = persistReducer(persistConfig, cartSlice.reducer);
+export const store = configureStore({
+  reducer: persistedReducer,
+});
+export const persistor = persistStore(store);
 export default cartSlice.reducer;

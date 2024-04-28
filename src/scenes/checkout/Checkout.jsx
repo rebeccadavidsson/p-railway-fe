@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
 );
 
 const Checkout = () => {
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state.cart);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleFormSubmit = async (values, actions) => {
