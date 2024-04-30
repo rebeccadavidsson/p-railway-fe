@@ -61,6 +61,16 @@ const ItemDetails = () => {
         return () => clearTimeout(timer);
     }, [itemId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const renderRelatedItems = () => {
+        const relatedItems = items.slice(0, 5).filter((newItem, i) => {
+            return newItem.id.toString() !== itemId;
+        });
+
+        return relatedItems.map((item, i) => (
+            <Item key={`${item.name}-${i}`} item={item}/>
+        ));
+    };
+
     return (
         <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto" style={{opacity: loading ? 0.5 : 1}}>
             <Box width="80%" m="80px auto">
@@ -88,6 +98,7 @@ const ItemDetails = () => {
                                     <Box m="65px 0 25px 0">
                                         <Typography>{item?.attributes?.category?.toUpperCase()}</Typography>
                                         <Typography variant="h2">{item?.attributes?.name}</Typography>
+                                        {item?.attributes?.width && item?.attributes?.height && (<Typography className="text-sm pb-1">{item?.attributes?.width} x {item?.attributes?.height}</Typography>)}
                                         <Typography fontWeight="bold">€ {item?.attributes?.price}</Typography>
                                         <Typography sx={{mt: "20px"}}>{item?.attributes?.description}</Typography>
                                     </Box>
@@ -112,7 +123,7 @@ const ItemDetails = () => {
                                     </Box>
                                 </Box>
                             </Box>
-                            {/* RELATED ITEMS */}
+
                             <Box mt="50px" width="100%">
                                 <Typography variant="h3" fontWeight="bold">
                                     Related Work
@@ -124,9 +135,7 @@ const ItemDetails = () => {
                                     justifyContent="flex-start"
                                     className={'gap-5'}
                                 >
-                                    {items.slice(0, 4).map((item, i) => (
-                                        <Item key={`${item.name}-${i}`} item={item}/>
-                                    ))}
+                                    {renderRelatedItems()}
                                 </Box>
                             </Box>
                         </div>

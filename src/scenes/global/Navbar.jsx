@@ -4,13 +4,12 @@ import {
   ShoppingBagOutlined,
   MenuOutlined,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { shades } from "../../theme";
 import { setIsCartOpen } from "../../state";
 import { useState } from 'react';
 
 function Navbar() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const [openMenu, setOpenMenu] = useState(false);
@@ -45,7 +44,9 @@ function Navbar() {
             sx={{"&:hover": {cursor: "pointer"}}}
             color={shades.secondary[500]}
         >
-          <img alt={'logo'} src={'/logo.png'} className={'w-20'}/>
+          <Link to="/">
+            <img alt={'logo'} src={'/logo.png'} className={'w-20'}/>
+          </Link>
         </Box>
         <Box
             display="flex"

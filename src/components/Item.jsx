@@ -38,11 +38,11 @@ const Item = ({ item, width }) => {
                         alt={name}
                         width="300px"
                         height="400px"
-                        src={image.data.attributes.formats.small.url ?? image?.attributes?.image?.data?.attributes?.url}
+                        src={image.data.attributes.formats.small?.url ?? image.data.attributes?.url}
                         data-srcset={`
-                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url } 187w,
-                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url ?? image?.attributes?.image?.data?.attributes?.url} 500w,
-                          ${image?.attributes?.image?.data?.attributes?.url} 1000w
+                          ${image.data.attributes.formats.small?.url ?? image.data.attributes?.url } 187w,
+                          ${image.data.attributes.formats.medium?.url ?? image.data.attributes?.url} 500w,
+                          ${image.data.attributes?.url} 1000w
                         `}
                         sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
                         onClick={() => navigate(`/item/${item.id}`)}

@@ -31,13 +31,13 @@ function Footer() {
             Contact
           </Typography>
           <Typography mb="30px" className={'break-words'}>
-            KVK: 76155099
-          </Typography>
-          <Typography mb="30px" className={'break-words'}>
             Tel: +31 6 29391304
           </Typography>
           <Typography mb="30px" sx={{ wordWrap: "break-word" }}>
             philipdavidssoncontact@gmail.com
+          </Typography>
+          <Typography mb="30px" className={'break-words'}>
+            KVK: 76155099
           </Typography>
         </Box>
       </Box>
