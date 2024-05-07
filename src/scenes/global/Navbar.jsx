@@ -29,7 +29,7 @@ function Navbar() {
       alignItems="center"
       width="100%"
       height="60px"
-      backgroundColor="white"
+      backgroundColor={shades.neutral[100]}
       color="black"
       zIndex="1"
     >

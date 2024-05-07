@@ -9,17 +9,23 @@ import { setItems } from "../../state";
 import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import LazyLoad from 'react-lazyload';
+import { Typography } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
 
 const ShoppingList = () => {
     const dispatch = useDispatch();
     const [value, setValue] = useState("all");
     const [loading, setLoading] = useState(true); // State to control loading visibility
+    const [profile, setProfile] = useState(null);
     const items = useSelector((state) => state.items ?? []);
     const breakPoint = useMediaQuery("(min-width:600px)");
     const cachedItems = useSelector((state) => state.items);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        if (newValue === 'about' && !profile) {
+            getProfile();
+        }
     };
 
     async function getItems() {
@@ -39,6 +45,22 @@ const ShoppingList = () => {
             console.error("Error fetching items:", error);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function getProfile() {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/pages/3?populate=image`, {
+                method: "GET"
+            });
+
+            // Check if the response is successful
+            if (response.ok) {
+                const data = await response.json();
+                setProfile(data?.data?.attributes);
+            }
+        } catch (error) {
+            console.error("Error fetching profile:", error);
         }
     }
 
@@ -66,8 +88,8 @@ const ShoppingList = () => {
                 }}
             >
                 <Tab label="ALL" value="all"/>
-                <Tab label="OIL" value="oil"/>
-                <Tab label="ACRYL" value="acryl"/>
+                <Tab label="AVAILABLE" value="available"/>
+                <Tab label="ABOUT / CONTACT" value="about"/>
             </Tabs>
 
             <CSSTransition
@@ -92,11 +114,28 @@ const ShoppingList = () => {
                 classNames="fade"
                 unmountOnExit
             >
+                {value === "about" ?
+                    (profile?.title && (
+                        <Box width="60%" className={'m-auto'}>
+                            <Typography
+                                mb="20px"
+                                variant="h3"
+                                fontWeight="bold"> {profile.title}</Typography>
+                            <ReactMarkdown children={profile?.description}/>
+
+                            {profile.image?.data?.attributes?.url && (
+                                <img src={profile.image?.data?.attributes?.url} alt={profile.title}
+                                     className="w-full mt-10"/>)}
+                        </Box>
+                    ))
+                    :
+
                 <ResponsiveMasonry
                     columnsCountBreakPoints={{750: 2, 1440: 3}}
                 >
                     <Masonry gutter={"10px"}>
-                        {items?.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (
+
+                        {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
                             <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
                                 <LazyLoad once>
                                     <img
@@ -114,9 +153,10 @@ const ShoppingList = () => {
                                     />
                                 </LazyLoad>
                             </Link>
-                        ))}
+                        ))})
                     </Masonry>
                 </ResponsiveMasonry>
+                }
             </CSSTransition>
         </Box>
     );

@@ -96,7 +96,7 @@ const MainCarousel = ({images}) => {
                     >
                         <img
                             src={selectedImage}
-                            alt="Enlarged"
+                            alt={""}
                             style={{
                                 position: 'relative' // Position relative to place the close button
                             }}

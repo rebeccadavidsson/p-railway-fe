@@ -16,6 +16,7 @@ body {
 
 .app {
   margin: auto;
+  background: #f8f8f5;
 }
 
 .fade-enter {
@@ -70,4 +71,17 @@ body {
   100% {
     background-position: 0 50%, 50% 50%, 100% 50%;
   }
+}
+
+#magnifier {
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: none;
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  overflow: hidden;
+  display: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  background-repeat: no-repeat;
 }

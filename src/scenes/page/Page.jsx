@@ -47,7 +47,7 @@ export const Page = ({id}) => {
                     fontWeight="bold"> {pageData.title}</Typography>
                 <ReactMarkdown children={pageData?.description}/>
 
-                {pageData.image && (<img src={pageData.image?.data?.attributes?.url} alt={pageData.title} className="w-full mt-10"/>)}
+                {pageData.image?.data?.attributes?.url && (<img src={pageData.image?.data?.attributes?.url} alt={pageData.title} className="w-full mt-10"/>)}
 
             </Box>
         </div>

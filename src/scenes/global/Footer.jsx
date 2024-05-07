@@ -1,13 +1,11 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { shades } from '../../theme';
 
 function Footer() {
-  const {
-    palette: { neutral },
-  } = useTheme();
   return (
-    <Box padding="40px 0" backgroundColor={neutral.light} className={'flex-auto'}>
+    <Box padding="40px 0" backgroundColor={shades.neutral[200]} className={'flex-auto'}>
       <Box
         width="80%"
         margin="auto"
