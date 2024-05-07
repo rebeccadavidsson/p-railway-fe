@@ -72,8 +72,8 @@ const ItemDetails = () => {
     };
 
     return (
-        <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto" style={{opacity: loading ? 0.5 : 1}}>
-            <Box width="80%" m="80px auto">
+        <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto w-full pl-4 pr-4" style={{opacity: loading ? 0.5 : 1}}>
+            <Box width="100%" m="80px auto">
                 {loading ? (
                     <div className="flex items-center justify-center h-screen">
                         <div
@@ -89,12 +89,12 @@ const ItemDetails = () => {
                         <div className="fade">
                             <Box sx={{flexWrap: 'wrap', display: 'flex'}} columnGap="40px">
                                 {/* IMAGES */}
-                                <Box flex="1 1 40%" mb="0">
+                                <Box flex="1 1 60%" mb="0">
                                     {item?.attributes && <MainCarousel images={images}/>}
                                 </Box>
 
                                 {/* ACTIONS */}
-                                <Box flex="1 1 50%" mb="40px">
+                                <Box flex="1 1 35%" mb="40px">
                                     <Box m="65px 0 25px 0">
                                         <Typography>{item?.attributes?.category?.toUpperCase()}</Typography>
                                         <Typography variant="h2">{item?.attributes?.name}</Typography>

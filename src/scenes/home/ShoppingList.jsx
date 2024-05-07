@@ -93,7 +93,7 @@ const ShoppingList = () => {
                 unmountOnExit
             >
                 <ResponsiveMasonry
-                    columnsCountBreakPoints={{350: 2, 750: 2}}
+                    columnsCountBreakPoints={{750: 2, 1440: 3}}
                 >
                     <Masonry gutter={"10px"}>
                         {items?.filter(item => value === "all" || item.attributes.category === value).map((image, index) => (

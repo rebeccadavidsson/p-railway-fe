@@ -24,7 +24,7 @@ function Navbar() {
 
   return (
     <Box
-      className={'max-w-4xl m-auto mt-0 mb-0'}
+      className={'max-w-4xl m-auto mt-0 mb-0 w-full pl-4 pr-4'}
       display="flex"
       alignItems="center"
       width="100%"
@@ -34,7 +34,7 @@ function Navbar() {
       zIndex="1"
     >
       <Box
-        width="80%"
+        width="100%"
         margin="auto"
         display="flex"
         justifyContent="space-between"

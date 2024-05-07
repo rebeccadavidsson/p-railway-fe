@@ -39,7 +39,7 @@ export const Page = ({id}) => {
     }, [id]);
 
     return (
-        <div className="max-w-xl m-auto flex-auto">
+        <div className="max-w-4xl m-auto flex-auto w-full">
             <Box width="80%" margin="80px auto">
                 <Typography
                     mb="20px"
