@@ -3,10 +3,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Fade, IconButton, Modal } from '@mui/material';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import useMagnifier from '../../components/useMagnifier';
 
 const MainCarousel = ({images}) => {
     const [open, setOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(images[0]);
+    const [magnifierPosition, handleMouseMove] = useMagnifier();
+    const [isHovered, setIsHovered] = useState(false);
+
+
 
     const handleOpen = (image) => {
         setSelectedImage(image);
@@ -22,11 +27,12 @@ const MainCarousel = ({images}) => {
         return (
             <button
                 onClick={onClickHandler}
-                className={`absolute z-10 bottom-0 mb-10 ${direction === 'next' ? 'right-0 mr-5' : 'left-0 ml-5'} w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center opacity-0 transition-opacity duration-300`}
+                style={{ zIndex: 100}}
+                className={`absolute bottom-0 mb-10 ${direction === 'next' ? 'right-0 mr-5' : 'left-0 ml-5'} w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center opacity-0 transition duration-300`}
             >
                 {direction === 'next' ?
-                    <img src={'/next.png'} alt="next" className={'h-4 w-1/2 object-none'}/> :
-                    <img src={'/back.png'} alt="back" className={'h-4 w-1/2 object-none mr-0.5'}/>
+                    <div className={'text-black'}> next </div> :
+                    <div className={'text-black'}> back </div>
                 }
             </button>
         );
@@ -67,14 +73,34 @@ const MainCarousel = ({images}) => {
                 }
             >
                 {images.map((image, index) => (
-                    <div onClick={() => handleOpen(image.attributes.url)}>
+                    <div
+                        className="relative"
+                        onMouseMove={handleMouseMove}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        onClick={() => handleOpen(image.attributes.url)}>
                         <img
                             key={index}
                             src={image.attributes.url}
                             alt={image.attributes.name}
-                            className="border-2 border-gray-300 p-2 transition duration-300 ease-in-out transform hover:border-gray-400 hover:shadow-lg hover:scale-110"
+                            className="transition duration-300 ease-in-out transform"
                         />
+                        {isHovered && (
+                            <div
+                                className="absolute border-4 border-white rounded-sm w-24 h-24 bg-cover"
+                                style={{
+                                    top: `${magnifierPosition.y}%`,
+                                    left: `${magnifierPosition.x}%`,
+                                    transform: 'translate(-50%, -50%)',
+                                    backgroundSize: '900px 900px',
+                                    backgroundImage: `url(${image.attributes.url})`,
+                                    backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
+                                    pointerEvents: 'none'
+                                }}
+                            />
+                        )}
                     </div>
+
                 ))}
             </Carousel>
 
@@ -103,6 +129,7 @@ const MainCarousel = ({images}) => {
                             className={'w-full p-2 max-w-4xl'}
                             onClick={(e) => e.stopPropagation()} // Prevent the click event from bubbling up to the backdrop
                         />
+
                         <IconButton
                             style={{
                                 position: 'absolute',
@@ -111,7 +138,7 @@ const MainCarousel = ({images}) => {
                             }}
                             onClick={handleClose} // Close the modal when the close button is clicked
                         >
-                            <CloseIcon />
+                            <CloseIcon/>
                         </IconButton>
                     </div>
                 </Fade>

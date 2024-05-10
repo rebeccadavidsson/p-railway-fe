@@ -108,14 +108,9 @@ const ShoppingList = () => {
                 </div>
             </CSSTransition>
 
-            <CSSTransition
-                in={!loading}
-                timeout={1000}
-                classNames="fade"
-                unmountOnExit
-            >
-                {value === "about" ?
-                    (profile?.title && (
+            {value === "about" ?
+                (profile?.title &&
+                   (
                         <Box width="60%" className={'m-auto'}>
                             <Typography
                                 mb="20px"
@@ -127,37 +122,45 @@ const ShoppingList = () => {
                                 <img src={profile.image?.data?.attributes?.url} alt={profile.title}
                                      className="w-full mt-10"/>)}
                         </Box>
-                    ))
-                    :
+                        )
+                )
+                :
 
-                <ResponsiveMasonry
-                    columnsCountBreakPoints={{750: 2, 1440: 3}}
+                <CSSTransition
+                    in={!loading}
+                    timeout={1000}
+                    classNames="fade"
+                    unmountOnExit
                 >
-                    <Masonry gutter={"10px"}>
 
-                        {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
-                            <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
-                                <LazyLoad once>
-                                    <img
-                                        className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"
-                                        src={image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url}
-                                        alt={image?.attributes?.name}
-                                        data-srcset={`
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{750: 2, 1440: 3}}
+                    >
+                        <Masonry gutter={"10px"}>
+
+                            {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
+                                <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
+                                    <LazyLoad once>
+                                        <img
+                                            className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"
+                                            src={image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url}
+                                            alt={image?.attributes?.name}
+                                            data-srcset={`
                                           ${image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url} 187w,
                                           ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url ?? image?.attributes?.image?.data?.attributes?.url} 500w,
                                           ${image?.attributes?.image?.data?.attributes?.url} 1000w
                                         `}
-                                        sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
-                                        style={{cursor: "pointer", width: "100%"}}
-                                        loading="lazy"
-                                    />
-                                </LazyLoad>
-                            </Link>
-                        ))})
-                    </Masonry>
-                </ResponsiveMasonry>
-                }
-            </CSSTransition>
+                                            sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
+                                            style={{cursor: "pointer", width: "100%"}}
+                                            loading="lazy"
+                                        />
+                                    </LazyLoad>
+                                </Link>
+                            ))})
+                        </Masonry>
+                    </ResponsiveMasonry></CSSTransition>
+            }
+
         </Box>
     );
 };
