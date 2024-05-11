@@ -13,6 +13,7 @@ import NotFound from './scenes/page/NotFound';
 import { Provider } from 'react-redux';
 import { persistor, store } from './state';
 import { PersistGate } from 'redux-persist/integration/react';
+import CancelPage from './scenes/checkout/CancelPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -41,6 +42,7 @@ function App() {
               <Route path="privacy" element={<Page id={2}/>}/>
               <Route path="about" element={<Page id={3}/>}/>
               <Route path="success" element={<SuccessPage />}/>
+              <Route path="cancel" element={<CancelPage />}/>
               {/* 404 Page */}
               <Route path="*" element={<NotFound />} />
               <Route path="/not-found" element={<NotFound />} />

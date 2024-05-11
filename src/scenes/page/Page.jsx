@@ -36,7 +36,7 @@ export const Page = ({id}) => {
         }
 
         getData();
-    }, [id]);
+    }, [id, navigate]);
 
     return (
         <div className="max-w-4xl m-auto flex-auto w-full">

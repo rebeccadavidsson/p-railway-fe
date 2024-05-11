@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const SuccessPage = () => {
     const location = useLocation();
     const [checkoutSession, setCheckoutSession] = useState(null);
     const [error, setError] = useState(null);
     const errorMessage = 'Oops! Something went wrong. Please try again later.';
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCheckoutSession = async () => {
             try {
                 const searchParams = new URLSearchParams(location.search);
                 const sessionId = searchParams.get('session_id');
+
+                // If there is no sessionId, redirect to the homepage
+                if (!sessionId) {
+                    navigate('/');
+                    return;
+                }
 
                 // Make a request to the backend server with the session ID
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/api/orders/checkout-session/${sessionId}`);
@@ -30,7 +37,7 @@ const SuccessPage = () => {
         };
 
         fetchCheckoutSession();
-    }, [location.search]);
+    }, [location.search, navigate]);
 
     return (
         <div style={{minHeight: '70vh'}} className="bg-gray-100 flex flex-col justify-center items-center">
@@ -44,7 +51,7 @@ const SuccessPage = () => {
                 ) : checkoutSession ? (
                     <div>
                         <p className="text-lg mb-4">Thank you for your
-                            order, {checkoutSession.customer_details.name}!</p>
+                            order, {checkoutSession.customer_details.name}! We will take care of your order as soon as possible.</p>
                         <div className="bg-gray-100 rounded-lg p-4 mb-4">
                             <p className="text-gray-600 mb-2">Total Price: €{checkoutSession.amount_total / 100}</p>
                             <div className="mb-2">
