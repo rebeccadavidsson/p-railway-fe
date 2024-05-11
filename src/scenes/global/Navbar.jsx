@@ -75,8 +75,8 @@ function Navbar() {
               <ShoppingBagOutlined />
             </IconButton>
           </Badge>
-          <IconButton sx={{ color: "black" }}>
-            <MenuOutlined onClick={toggleDrawer(true)} />
+          <IconButton sx={{ color: "black" }} onClick={toggleDrawer(true)}>
+            <MenuOutlined />
           </IconButton>
           <Drawer
               anchor="right"
@@ -94,7 +94,7 @@ function Navbar() {
           >
             <List>
               {[
-                { text: 'Home', link: '/home' },
+                { text: 'Home', link: '/' },
                 { text: 'About Me', link: '/about' },
                 { text: 'Terms & Conditions', link: '/terms-and-conditions' },
                 { text: 'Privacy Policy', link: '/privacy' }

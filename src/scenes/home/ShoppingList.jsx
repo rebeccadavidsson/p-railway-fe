@@ -20,6 +20,7 @@ const ShoppingList = () => {
     const items = useSelector((state) => state.items ?? []);
     const breakPoint = useMediaQuery("(min-width:600px)");
     const cachedItems = useSelector((state) => state.items);
+    const nodeRef = React.useRef(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -72,7 +73,6 @@ const ShoppingList = () => {
         <Box className={'m-auto mt-20 ml-4 mr-4'}>
             <img alt={'logo'} src={'logo.png'} className={'max-w-[300px] m-auto'}/>
 
-            {/*// A search bar that searches on the title of the item*/}
             <Tabs
                 textColor="primary"
                 indicatorColor="primary"
@@ -92,26 +92,26 @@ const ShoppingList = () => {
                 <Tab label="ABOUT / CONTACT" value="about"/>
             </Tabs>
 
-            <CSSTransition
+            {loading && <CSSTransition
                 in={loading} // Show loader when loading state is true
                 classNames="fade"
                 unmountOnExit
                 timeout={0}
+                nodeRef={nodeRef}
             >
-                <div className="relative mt-8">
-                    <div className="inset-0 flex items-center justify-center">
-                        <div className="text-center p-8 rounded-lg">
-                            <p className="text-lg mb-4">Loading items...</p>
-                            <div className="loader m-auto"></div>
+                <div className="grid grid-cols-2 gap-4 animate-pulse" ref={nodeRef}>
+                    {[...Array(10)].map((_, index) => (
+                        <div key={index} className="space-y-4 py-1">
+                            <div className="h-80 bg-gray-200 m-auto rounded w-full"></div>
                         </div>
-                    </div>
+                    ))}
                 </div>
-            </CSSTransition>
+            </CSSTransition>}
 
             {value === "about" ?
                 (profile?.title &&
-                   (
-                        <Box width="60%" className={'m-auto'}>
+                    (
+                        <Box className={'m-auto w-full md:w-3/5'}>
                             <Typography
                                 mb="20px"
                                 variant="h3"
@@ -120,7 +120,7 @@ const ShoppingList = () => {
 
                             {profile.image?.data?.attributes?.url && (
                                 <img src={profile.image?.data?.attributes?.url} alt={profile.title}
-                                     className="w-full mt-10"/>)}
+                                     className="w-1/2 mt-10"/>)}
                         </Box>
                         )
                 )
@@ -131,34 +131,34 @@ const ShoppingList = () => {
                     timeout={1000}
                     classNames="fade"
                     unmountOnExit
-                >
-
-                    <ResponsiveMasonry
-                        columnsCountBreakPoints={{750: 2, 1440: 3}}
+                    key={value}
                     >
-                        <Masonry gutter={"10px"}>
-
-                            {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
-                                <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
-                                    <LazyLoad once>
-                                        <img
-                                            className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"
-                                            src={image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url}
-                                            alt={image?.attributes?.name}
-                                            data-srcset={`
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url} 187w,
-                                          ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url ?? image?.attributes?.image?.data?.attributes?.url} 500w,
-                                          ${image?.attributes?.image?.data?.attributes?.url} 1000w
-                                        `}
-                                            sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
-                                            style={{cursor: "pointer", width: "100%"}}
-                                            loading="lazy"
-                                        />
-                                    </LazyLoad>
-                                </Link>
-                            ))})
-                        </Masonry>
-                    </ResponsiveMasonry></CSSTransition>
+                        <ResponsiveMasonry
+                            columnsCountBreakPoints={{750: 2, 1440: 3}}
+                        >
+                            <Masonry gutter={"10px"}>
+                                {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
+                                    <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
+                                        <LazyLoad once>
+                                            <img
+                                                className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"
+                                                src={image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url}
+                                                alt={image?.attributes?.name}
+                                                data-srcset={`
+                                              ${image?.attributes?.image?.data?.attributes?.formats?.small?.url ?? image?.attributes?.image?.data?.attributes?.url} 187w,
+                                              ${image?.attributes?.image?.data?.attributes?.formats?.medium?.url ?? image?.attributes?.image?.data?.attributes?.url} 500w,
+                                              ${image?.attributes?.image?.data?.attributes?.url} 1000w
+                                            `}
+                                                sizes="(max-width: 600px) 80vw, (max-width: 1024px) 60vw, 1000px"
+                                                style={{cursor: "pointer", width: "100%"}}
+                                                loading="lazy"
+                                            />
+                                        </LazyLoad>
+                                    </Link>
+                                ))})
+                            </Masonry>
+                        </ResponsiveMasonry>
+                    </CSSTransition>
             }
 
         </Box>

@@ -47,7 +47,7 @@ body {
 .loader {
   width: 100px;
   height: 40px;
-  --g: radial-gradient(farthest-side,#f5f5f5 calc(95% - 3px),#fff calc(100% - 3px) 98%,white 101%) no-repeat;
+  --g: radial-gradient(farthest-side,#f5f5f5 calc(95% - 3px),#fff calc(100% - 3px) 98%,#f8f8f5 101%) no-repeat;
   background: var(--g), var(--g), var(--g);
   background-size: 30px 30px;
   animation: l9 1s infinite alternate;

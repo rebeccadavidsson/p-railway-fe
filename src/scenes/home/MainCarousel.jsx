@@ -11,8 +11,6 @@ const MainCarousel = ({images}) => {
     const [magnifierPosition, handleMouseMove] = useMagnifier();
     const [isHovered, setIsHovered] = useState(false);
 
-
-
     const handleOpen = (image) => {
         setSelectedImage(image);
         setOpen(true);
@@ -74,6 +72,7 @@ const MainCarousel = ({images}) => {
             >
                 {images.map((image, index) => (
                     <div
+                        key={index}
                         className="relative"
                         onMouseMove={handleMouseMove}
                         onMouseEnter={() => setIsHovered(true)}
@@ -87,12 +86,14 @@ const MainCarousel = ({images}) => {
                         />
                         {isHovered && (
                             <div
-                                className="absolute border-4 border-white rounded-sm w-24 h-24 bg-cover"
+                                className="absolute border-4 border-white rounded-sm bg-cover"
                                 style={{
+                                    width: '120px',
+                                    height: '120px',
                                     top: `${magnifierPosition.y}%`,
                                     left: `${magnifierPosition.x}%`,
                                     transform: 'translate(-50%, -50%)',
-                                    backgroundSize: '900px 900px',
+                                    backgroundSize: '1100%',
                                     backgroundImage: `url(${image.attributes.url})`,
                                     backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
                                     pointerEvents: 'none'
@@ -124,9 +125,9 @@ const MainCarousel = ({images}) => {
                             src={selectedImage}
                             alt={""}
                             style={{
-                                position: 'relative' // Position relative to place the close button
+                                position: 'relative', // Position relative to place the close button
                             }}
-                            className={'w-full p-2 max-w-4xl'}
+                            className={'w-auto p-2 max-w-2xl'}
                             onClick={(e) => e.stopPropagation()} // Prevent the click event from bubbling up to the backdrop
                         />
 

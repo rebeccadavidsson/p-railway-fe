@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Item from "../../components/Item";
 import { addToCart, removeFromCart } from "../../state";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,7 @@ const ItemDetails = () => {
     const [showContent, setShowContent] = useState(false);
     const cart = useSelector((state) => state.cart);
     const isInCart = cart?.some(cartItem => cartItem?.id === item?.id);
+    const nodeRef = useRef(null);
 
     async function getItem() {
         const item = await fetch(
@@ -62,8 +63,8 @@ const ItemDetails = () => {
     }, [itemId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const renderRelatedItems = () => {
-        const relatedItems = items.slice(0, 5).filter((newItem, i) => {
-            return newItem.id.toString() !== itemId;
+        const relatedItems = items.slice(0, 5).filter((newItem) => {
+            return newItem.id.toString() !== itemId && newItem.category === item?.category;
         });
 
         return relatedItems.map((item, i) => (
@@ -75,9 +76,13 @@ const ItemDetails = () => {
         <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto w-full pl-4 pr-4" style={{opacity: loading ? 0.5 : 1}}>
             <Box width="100%" m="80px auto">
                 {loading ? (
-                    <div className="flex items-center justify-center h-screen">
-                        <div
-                            className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+                    <div className="grid gap-5 mb-20" style={{gridTemplateColumns: '65% auto'}}>
+                        <div className="mb-0 bg-gray-200 animate-pulse h-96"></div>
+                        <div className="mt-20">
+                            <div className={'bg-gray-200 animate-pulse h-10'}></div>
+                            <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/5"></div>
+                            <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/6"></div>
+                        </div>
                     </div>
                 ) : (
                     <CSSTransition
@@ -85,8 +90,9 @@ const ItemDetails = () => {
                         timeout={500}
                         classNames="fade"
                         appear
+                        nodeRef={nodeRef}
                     >
-                        <div className="fade">
+                        <div className="fade" ref={nodeRef}>
                             <Box sx={{flexWrap: 'wrap', display: 'flex'}} columnGap="40px">
                                 {/* IMAGES */}
                                 <Box flex="1 1 60%" mb="0">
@@ -94,11 +100,12 @@ const ItemDetails = () => {
                                 </Box>
 
                                 {/* ACTIONS */}
-                                <Box flex="1 1 35%" mb="40px">
+                                <Box flex="1 1 28%" mb="40px">
                                     <Box m="65px 0 25px 0">
                                         <Typography>{item?.attributes?.category?.toUpperCase()}</Typography>
                                         <Typography variant="h2">{item?.attributes?.name}</Typography>
-                                        {item?.attributes?.width && item?.attributes?.height && (<Typography className="text-sm pb-1">{item?.attributes?.width} x {item?.attributes?.height}</Typography>)}
+                                        {item?.attributes?.width && item?.attributes?.height && (<Typography
+                                            className="text-sm pb-1">{item?.attributes?.width} x {item?.attributes?.height}</Typography>)}
                                         <Typography fontWeight="bold">€ {item?.attributes?.price}</Typography>
                                         <Typography sx={{mt: "20px"}}>{item?.attributes?.description}</Typography>
                                     </Box>
@@ -116,7 +123,12 @@ const ItemDetails = () => {
                                                     color: 'white',
                                                 },
                                             }}
-                                            onClick={() => isInCart ? dispatch(removeFromCart({id: item?.id})) : dispatch(addToCart({item: {...item, count}}))}
+                                            onClick={() => isInCart ? dispatch(removeFromCart({id: item?.id})) : dispatch(addToCart({
+                                                item: {
+                                                    ...item,
+                                                    count
+                                                }
+                                            }))}
                                         >
                                             {isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'}
                                         </Button>
@@ -130,10 +142,10 @@ const ItemDetails = () => {
                                 </Typography>
                                 <Box
                                     mt="20px"
-                                    display="flex"
                                     flexWrap="wrap"
                                     justifyContent="flex-start"
-                                    className={'gap-5'}
+                                    className={'grid grid-cols-1 sm:grid-cols-2 gap-5'}
+                                    style={{gridTemplateColumns: 'auto auto'}}
                                 >
                                     {renderRelatedItems()}
                                 </Box>
