@@ -85,12 +85,24 @@ const ItemDetails = () => {
         <div className="transition-opacity duration-500 ease-in-out max-w-4xl m-auto w-full pl-4 pr-4" style={{opacity: loading ? 0.5 : 1}}>
             <Box width="100%" m="80px auto">
                 {loading ? (
-                    <div className="grid gap-5 mb-20" style={{gridTemplateColumns: '65% auto'}}>
-                        <div className="mb-0 bg-gray-200 animate-pulse h-96"></div>
-                        <div className="mt-20">
-                            <div className={'bg-gray-200 animate-pulse h-10'}></div>
-                            <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/5"></div>
-                            <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/6"></div>
+                    <div>
+                        <div className="sm:hidden gird mb-2">
+                            <div className="mb-0 bg-gray-200 animate-pulse h-80"></div>
+                            <div className="mt-5">
+                                <div className={'bg-gray-200 animate-pulse h-10'}></div>
+                                <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/5"></div>
+                                <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/6"></div>
+                            </div>
+                        </div>
+
+
+                        <div className="hidden md:grid gap-5 mb-20" style={{gridTemplateColumns: '65% auto'}}>
+                            <div className="mb-0 bg-gray-200 animate-pulse h-96"></div>
+                            <div className="mt-20">
+                                <div className={'bg-gray-200 animate-pulse h-10'}></div>
+                                <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/5"></div>
+                                <div className="mt-2 bg-gray-200 animate-pulse h-5 w-1/6"></div>
+                            </div>
                         </div>
                     </div>
                 ) : (
@@ -122,8 +134,10 @@ const ItemDetails = () => {
                                     <Box display="flex" alignItems="center" minHeight="50px">
                                         {item?.attributes?.available === false ? (
                                             <div className={'flex-row'}>
-                                                <Typography className="text-red-800 font-bold">NIET BESCHIKBAAR</Typography>
-                                                <p className={'text-xs'}>Deze is al weggegeven of verkocht, maar hoogstwaarschijnlijk heb ik er overheen geschilderd.</p>
+                                                <Typography className="text-red-800 font-bold">NIET
+                                                    BESCHIKBAAR</Typography>
+                                                <p className={'text-xs'}>Deze is al weggegeven of verkocht, maar
+                                                    hoogstwaarschijnlijk heb ik er overheen geschilderd.</p>
                                             </div>
                                         ) : (
                                             <Button
@@ -154,7 +168,7 @@ const ItemDetails = () => {
 
                             <Box mt="50px" width="100%">
                                 <Typography variant="h3" fontWeight="bold">
-                                   Gerelateerd
+                                    Gerelateerd
                                 </Typography>
                                 <Box
                                     mt="20px"
