@@ -21,6 +21,7 @@ const ShoppingList = () => {
     const breakPoint = useMediaQuery("(min-width:600px)");
     const cachedItems = useSelector((state) => state.items);
     const nodeRef = React.useRef(null);
+    const nodeRef2 = React.useRef(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -33,11 +34,12 @@ const ShoppingList = () => {
         if (cachedItems !== undefined && cachedItems?.length > 0) {
             dispatch(setItems(cachedItems));
             setLoading(false);
+            return;
         }
 
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/api/items?_sort=position:asc&populate=image`,
+                `${process.env.REACT_APP_API_URL}/api/items?populate=image`,
                 { method: "GET" }
             );
             const itemsJson = await response.json();
@@ -132,8 +134,10 @@ const ShoppingList = () => {
                     classNames="fade"
                     unmountOnExit
                     key={value}
+                    nodeRef={nodeRef2}
                     >
                         <ResponsiveMasonry
+                            ref={nodeRef2}
                             columnsCountBreakPoints={{750: 2, 1440: 3}}
                         >
                             <Masonry gutter={"10px"}>
