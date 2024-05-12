@@ -11,7 +11,7 @@ const CancelPage = () => {
     };
 
     return (
-        <div style={{minHeight: '70vh'}} className="bg-gray-100 flex flex-col justify-center items-center">
+        <div style={{minHeight: '70vh'}} className="flex flex-col justify-center items-center">
             <div className="max-w-md w-full bg-white shadow-md rounded-lg p-8">
                 <h2 className="text-3xl font-semibold mb-4">Order Cancelled</h2>
                 <p className="text-lg mb-4">Your order has been cancelled. If you have any questions, please contact us.</p>

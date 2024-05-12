@@ -16,7 +16,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="h4" fontWeight="bold" mb="30px">
-            About
+            Over
           </Typography>
           <Link to={'about'}> <Typography mb="30px">Over / contact</Typography></Link>
           <Link to={'terms-and-conditions'}><Typography mb="30px">Algemene voorwaarden</Typography></Link>

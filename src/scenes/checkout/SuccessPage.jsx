@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../../state';
 
 const SuccessPage = () => {
     const location = useLocation();
@@ -7,6 +9,7 @@ const SuccessPage = () => {
     const [error, setError] = useState(null);
     const errorMessage = 'Oops! Something went wrong. Please try again later.';
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchCheckoutSession = async () => {
@@ -30,6 +33,9 @@ const SuccessPage = () => {
                 const data = await response.json();
 
                 setCheckoutSession(data);
+
+                // Clear the cart if the checkout session was successfully fetched
+                dispatch(clearCart());
             } catch (error) {
                 console.error('Error fetching checkout session:', error);
                 setError(errorMessage);
@@ -37,12 +43,12 @@ const SuccessPage = () => {
         };
 
         fetchCheckoutSession();
-    }, [location.search, navigate]);
+    }, [location.search, navigate, dispatch]);
 
     return (
-        <div style={{minHeight: '70vh'}} className="bg-gray-100 flex flex-col justify-center items-center">
+        <div style={{minHeight: '70vh'}} className="flex flex-col justify-center items-center">
             <div className="max-w-md w-full bg-white shadow-md rounded-lg p-8">
-                <h2 className="text-3xl font-semibold mb-4">Order Details</h2>
+                <h2 className="text-3xl font-semibold mb-4">Jouw bestelling</h2>
 
                 {error ? (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -50,12 +56,11 @@ const SuccessPage = () => {
                     </div>
                 ) : checkoutSession ? (
                     <div>
-                        <p className="text-lg mb-4">Thank you for your
-                            order, {checkoutSession.customer_details.name}! We will take care of your order as soon as possible.</p>
+                        <p className="text-lg mb-4">Bedankt voor jouw bestelling, {checkoutSession.customer_details.name}! Het zal zo snel mogelijk jouw kant op komen.</p>
                         <div className="bg-gray-100 rounded-lg p-4 mb-4">
-                            <p className="text-gray-600 mb-2">Total Price: €{checkoutSession.amount_total / 100}</p>
+                            <p className="text-gray-600 mb-2">Totaal: €{checkoutSession.amount_total / 100}</p>
                             <div className="mb-2">
-                                <p className="font-semibold">Address</p>
+                                <p className="font-semibold">Adres</p>
                                 <p>{checkoutSession.customer_details.address.line1}</p>
                                 <p>{checkoutSession.customer_details.address.postal_code} {checkoutSession.customer_details.address.city}</p>
                             </div>
@@ -69,7 +74,7 @@ const SuccessPage = () => {
                         </div>
                     </div>
                 ) : (
-                    <p>Loading order details...</p>
+                    <p>De bestelling details worden geladen...</p>
                 )}
             </div>
         </div>

@@ -30,6 +30,10 @@ export const cartSlice = createSlice({
       state.cart = state.cart.filter((item) => item.id !== action.payload.id);
     },
 
+    clearCart: (state) => {
+      state.cart = [];
+    },
+
     increaseCount: (state, action) => {
       state.cart = state.cart.map((item) => {
         if (item.id === action.payload.id) {
@@ -58,6 +62,7 @@ export const {
   setItems,
   addToCart,
   removeFromCart,
+  clearCart,
   increaseCount,
   decreaseCount,
   setIsCartOpen,
