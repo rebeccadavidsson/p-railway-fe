@@ -41,6 +41,7 @@ function App() {
               <Route path="terms-and-conditions" element={<Page id={1}/>}/>
               <Route path="privacy" element={<Page id={2}/>}/>
               <Route path="about" element={<Page id={3}/>}/>
+              <Route path="shipping-and-returns" element={<Page id={4}/>}/>
               <Route path="success" element={<SuccessPage />}/>
               <Route path="cancel" element={<CancelPage />}/>
               {/* 404 Page */}

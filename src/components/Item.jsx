@@ -5,6 +5,7 @@ import { shades } from "../theme";
 import { addToCart, removeFromCart } from "../state";
 import { useNavigate } from "react-router-dom";
 import LazyLoad from 'react-lazyload';
+import { categoryMap } from './categories';
 
 const Item = ({ item, width }) => {
   const navigate = useNavigate();
@@ -51,28 +52,28 @@ const Item = ({ item, width }) => {
                     />
                 </LazyLoad>
             )}
-          <Box
-              display={isHovered ? "block" : "none"}
-              position="absolute"
-              bottom="10%"
-              left="0"
-              width="100%"
-              padding="0 5%"
-          >
-            <Box>
-                <Button
-                    onClick={handleClick}
-                    sx={{ backgroundColor: shades.primary[300], color: "white" }}
-                >
-                    {isInCart ? 'Remove from Cart' : 'Add to Cart'}
-                </Button>
-            </Box>
-          </Box>
+            {item?.attributes?.available && <Box
+                display={isHovered ? "block" : "none"}
+                position="absolute"
+                bottom="10%"
+                left="0"
+                width="100%"
+                padding="0 5%"
+            >
+                <Box>
+                    <Button
+                        onClick={handleClick}
+                        sx={{backgroundColor: shades.primary[300], color: "white"}}
+                    >
+                        {isInCart ? 'Verwijderen' : 'Bestellen'}
+                    </Button>
+                </Box>
+            </Box>}
         </Box>
 
         <Box mt="3px">
           <Typography variant="subtitle2" color={shades.secondary[500]}>
-            {category}
+            {categoryMap[category]}
           </Typography>
           <Typography>{name}</Typography>
           <Typography fontWeight="bold">€{price}</Typography>

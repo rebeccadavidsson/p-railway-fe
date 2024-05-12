@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from "@mui/material";
 import ReactMarkdown from 'react-markdown';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Page = ({id}) => {
     const [pageData, setData] = useState({
@@ -10,6 +10,18 @@ export const Page = ({id}) => {
         image: ''
     });
     const navigate = useNavigate();
+
+    const markdownComponents = {
+        h1: ({node, ...props}) => <Typography variant="h1" {...props} />,
+        h2: ({node, ...props}) => <Typography variant="h2" {...props} />,
+        h3: ({node, ...props}) => <Typography variant="h3" {...props} />,
+        h4: ({node, ...props}) => <Typography variant="h4" {...props} />,
+        h5: ({node, ...props}) => <Typography variant="h5" {...props} />,
+        h6: ({node, ...props}) => <Typography variant="h6" {...props} />,
+        p: ({node, ...props}) => <Typography {...props} />,
+        a: ({node, ...props}) => <Link {...props} />,
+        // Add more components as needed
+    };
 
     useEffect(() => {
         async function getData() {
@@ -21,7 +33,6 @@ export const Page = ({id}) => {
                 // Check if the response is successful
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data, "data?.data?.attributes")
                     setData(data?.data?.attributes);
                 } else if (response.status === 404 || response.status === 400) {
                     navigate('/not-found');
@@ -45,7 +56,7 @@ export const Page = ({id}) => {
                     mb="20px"
                     variant="h3"
                     fontWeight="bold"> {pageData.title}</Typography>
-                <ReactMarkdown children={pageData?.description}/>
+                <ReactMarkdown components={markdownComponents} children={pageData?.description} breaks={true}/>
 
                 {pageData.image?.data?.attributes?.url && (<img src={pageData.image?.data?.attributes?.url} alt={pageData.title} className="w-1/2 mt-10"/>)}
 

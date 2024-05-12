@@ -7,7 +7,9 @@ import {
   removeFromCart,
   setIsCartOpen,
 } from "../../state";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -48,7 +50,7 @@ const CartMenu = () => {
         <Box padding="30px" overflow="auto" height="100%">
           {/* HEADER */}
           <FlexBox mb="15px">
-            <Typography variant="h3">SHOPPING CART ({cart?.length})</Typography>
+            <Typography variant="h3">JOUW LIJST ({cart?.length})</Typography>
             <IconButton onClick={() => dispatch(setIsCartOpen({}))}>
               <CloseIcon />
             </IconButton>
@@ -93,16 +95,28 @@ const CartMenu = () => {
             ))}
           </Box>
 
+          <Box className="mt-4">
+            <p className="text-gray-700 font-bolt">
+              <CheckCircleIcon className={'mr-0.5'} /> Elk schilderij wordt geleverd met een lijst. De lijst is zorgvuldig geselecteerd in combinatie met het schilderij en
+              en is inbegrepen in de prijs.
+              Als je een schilderij wilt kopen zonder lijst of met een andere lijst, neem dan contact met mij op voor de prijs.
+            </p>
+
+            <p className="text-gray-700 mt-4">
+              <CheckCircleIcon className={'mr-0.5'} /> Bestellingen worden binnen 10 dagen geleverd. Het is ook mogelijk om het/de schilderij(en) in Utrecht op te halen. Neem voor meer informatie <Link onClick={() => dispatch(setIsCartOpen({}))} to="/about" className="text-blue-500 hover:underline"> contact</Link> met mij op.
+            </p>
+          </Box>
+
           {/* ACTIONS */}
           <Box m="20px 0">
             <FlexBox m="20px 0">
-              <Typography fontWeight="bold">TOTAL</Typography>
+              <Typography fontWeight="bold">TOTAAL</Typography>
               <Typography fontWeight="bold">€{totalPrice}</Typography>
             </FlexBox>
             <Button
-              sx={{
-                backgroundColor: shades.primary[400],
-                color: "white",
+                sx={{
+                  backgroundColor: shades.primary[400],
+                  color: "white",
                 borderRadius: 0,
                 width: "100%",
                 padding: "20px 40px",
@@ -117,7 +131,7 @@ const CartMenu = () => {
                 dispatch(setIsCartOpen({}));
               }}
             >
-              CHECKOUT
+              BESTELLEN
             </Button>
           </Box>
         </Box>

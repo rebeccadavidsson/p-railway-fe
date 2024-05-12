@@ -37,7 +37,7 @@ const ShoppingList = () => {
 
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/api/items?populate=image`,
+                `${process.env.REACT_APP_API_URL}/api/items?_sort=position:asc&populate=image`,
                 { method: "GET" }
             );
             const itemsJson = await response.json();
@@ -87,9 +87,9 @@ const ShoppingList = () => {
                     },
                 }}
             >
-                <Tab label="ALL" value="all"/>
-                <Tab label="AVAILABLE" value="available"/>
-                <Tab label="ABOUT / CONTACT" value="about"/>
+                <Tab label="Alles" value="all"/>
+                <Tab label="Beschikbaar" value="available"/>
+                <Tab label="Contact" value="about"/>
             </Tabs>
 
             {loading && <CSSTransition
@@ -138,7 +138,7 @@ const ShoppingList = () => {
                         >
                             <Masonry gutter={"10px"}>
                                 {items?.filter(item => value === "all" || (value === 'available' && item.attributes.available === true)).map((image, index) => (
-                                    <Link to={`/item/${image?.attributes?.image?.data?.id}`} key={index}>
+                                    <Link to={`/item/${image?.id}`} key={index}>
                                         <LazyLoad once>
                                             <img
                                                 className="transition duration-300 ease-in-out transform hover:scale-105 hover:border-gray-400 hover:shadow-lg"

@@ -95,9 +95,10 @@ function Navbar() {
             <List>
               {[
                 { text: 'Home', link: '/' },
-                { text: 'About Me', link: '/about' },
-                { text: 'Terms & Conditions', link: '/terms-and-conditions' },
-                { text: 'Privacy Policy', link: '/privacy' }
+                { text: 'Over / Contact', link: '/about' },
+                { text: 'Algemene voorwaarden', link: '/terms-and-conditions' },
+                { text: 'Privacybeleid', link: '/privacy' },
+                { text: 'Verzenden en retourneren', link: '/shipping-and-returns' }
               ].map(({ text, link }) => (
                   <ListItem key={text} component="a" href={link} onClick={toggleDrawer(false)}>
                     <ListItemText primary={text} />

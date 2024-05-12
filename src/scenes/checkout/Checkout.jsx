@@ -61,10 +61,10 @@ const Checkout = () => {
       )}
       <Stepper sx={{m: "20px 0"}}>
         <Step>
-          <StepLabel>Contact Information</StepLabel>
+          <StepLabel>Contactgegevens</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Payment</StepLabel>
+          <StepLabel>Betaling</StepLabel>
         </Step>
       </Stepper>
       <Box>
@@ -106,7 +106,7 @@ const Checkout = () => {
                     padding: "15px 40px",
                   }}
                 >
-                  Next
+                  Betalen
                 </Button>
               </Box>
             </form>

@@ -18,9 +18,10 @@ function Footer() {
           <Typography variant="h4" fontWeight="bold" mb="30px">
             About
           </Typography>
-          <Link to={'about'}> <Typography mb="30px">About me</Typography></Link>
-          <Link to={'terms-and-conditions'}><Typography mb="30px">Terms & Conditions</Typography></Link>
-          <Link to={'privacy'}><Typography mb="30px">Privacy Policy</Typography></Link>
+          <Link to={'about'}> <Typography mb="30px">Over / contact</Typography></Link>
+          <Link to={'terms-and-conditions'}><Typography mb="30px">Algemene voorwaarden</Typography></Link>
+          <Link to={'privacy'}><Typography mb="30px">Privacybeleid</Typography></Link>
+          <Link to={'shipping-and-returns'}><Typography mb="30px">Verzenden en retourneren</Typography></Link>
         </Box>
 
         <Box className={'max-w-full'}>

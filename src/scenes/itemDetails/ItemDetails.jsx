@@ -6,6 +6,7 @@ import { addToCart, removeFromCart } from "../../state";
 import { useDispatch, useSelector } from "react-redux";
 import MainCarousel from "../home/MainCarousel";
 import { CSSTransition } from 'react-transition-group';
+import { categoryMap } from '../../components/categories';
 
 
 const ItemDetails = () => {
@@ -41,7 +42,7 @@ const ItemDetails = () => {
 
     async function getItems() {
         const items = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/items?populate=image&populate=subimages`,
+            `${process.env.REACT_APP_API_URL}/api/items?_limit=20&populate=image&populate=subimages`,
             {
                 method: "GET",
             }
@@ -56,16 +57,24 @@ const ItemDetails = () => {
         getItems();
 
         const timer = setTimeout(() => {
-            setShowContent(true);
+            if (item) {
+                setShowContent(true);
+            }
         }, 500); // Adjust the delay time as needed (in milliseconds)
 
         return () => clearTimeout(timer);
     }, [itemId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const renderRelatedItems = () => {
-        const relatedItems = items.slice(0, 5).filter((newItem) => {
-            return newItem.id.toString() !== itemId && newItem.category === item?.category;
+        let relatedItems = items.slice(0, 5).filter((newItem) => {
+            return newItem.id.toString() !== itemId && newItem?.attributes?.category === item?.attributes?.category;
         });
+
+        if (relatedItems.length === 0) {
+            relatedItems = items.slice(0, 5).filter((newItem) => {
+                return newItem.id.toString() !== itemId
+            });
+        }
 
         return relatedItems.map((item, i) => (
             <Item key={`${item.name}-${i}`} item={item}/>
@@ -102,7 +111,7 @@ const ItemDetails = () => {
                                 {/* ACTIONS */}
                                 <Box flex="1 1 28%" mb="40px">
                                     <Box m="65px 0 25px 0">
-                                        <Typography>{item?.attributes?.category?.toUpperCase()}</Typography>
+                                        <Typography>{categoryMap[item?.attributes?.category]?.toUpperCase()}</Typography>
                                         <Typography variant="h2">{item?.attributes?.name}</Typography>
                                         {item?.attributes?.width && item?.attributes?.height && (<Typography
                                             className="text-sm pb-1">{item?.attributes?.width} x {item?.attributes?.height}</Typography>)}
@@ -111,34 +120,41 @@ const ItemDetails = () => {
                                     </Box>
 
                                     <Box display="flex" alignItems="center" minHeight="50px">
-                                        <Button
-                                            sx={{
-                                                backgroundColor: "#222222",
-                                                color: "white",
-                                                borderRadius: 0,
-                                                minWidth: "150px",
-                                                padding: "10px 40px",
-                                                ':hover': {
-                                                    backgroundColor: 'neutral.dark',
-                                                    color: 'white',
-                                                },
-                                            }}
-                                            onClick={() => isInCart ? dispatch(removeFromCart({id: item?.id})) : dispatch(addToCart({
-                                                item: {
-                                                    ...item,
-                                                    count
-                                                }
-                                            }))}
-                                        >
-                                            {isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'}
-                                        </Button>
+                                        {item?.attributes?.available === false ? (
+                                            <div className={'flex-row'}>
+                                                <Typography className="text-red-800 font-bold">NIET BESCHIKBAAR</Typography>
+                                                <p className={'text-xs'}>Deze is al weggegeven of verkocht, maar hoogstwaarschijnlijk heb ik er overheen geschilderd.</p>
+                                            </div>
+                                        ) : (
+                                            <Button
+                                                sx={{
+                                                    backgroundColor: "#222222",
+                                                    color: "white",
+                                                    borderRadius: 0,
+                                                    minWidth: "150px",
+                                                    padding: "10px 40px",
+                                                    ':hover': {
+                                                        backgroundColor: 'neutral.dark',
+                                                        color: 'white',
+                                                    },
+                                                }}
+                                                onClick={() => isInCart ? dispatch(removeFromCart({id: item?.id})) : dispatch(addToCart({
+                                                    item: {
+                                                        ...item,
+                                                        count
+                                                    }
+                                                }))}
+                                            >
+                                                {isInCart ? 'VERWIJDEREN' : 'BESTELLEN'}
+                                            </Button>
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
 
                             <Box mt="50px" width="100%">
                                 <Typography variant="h3" fontWeight="bold">
-                                    Related Work
+                                   Gerelateerd
                                 </Typography>
                                 <Box
                                     mt="20px"

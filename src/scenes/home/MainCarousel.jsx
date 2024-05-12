@@ -29,8 +29,8 @@ const MainCarousel = ({images}) => {
                 className={`absolute bottom-0 mb-10 ${direction === 'next' ? 'right-0 mr-5' : 'left-0 ml-5'} w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center opacity-0 transition duration-300`}
             >
                 {direction === 'next' ?
-                    <div className={'text-black'}> next </div> :
-                    <div className={'text-black'}> back </div>
+                    <div className={'text-black'}> > </div> :
+                    <div className={'text-black'}> {'<'} </div>
                 }
             </button>
         );
