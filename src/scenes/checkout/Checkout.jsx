@@ -25,6 +25,7 @@ const Checkout = () => {
     actions.setTouched({});
   };
 
+
   async function makePayment(values) {
     const stripe = await stripePromise;
 
@@ -123,8 +124,8 @@ const initialValues = {
 };
 
 const checkoutSchema = yup.object().shape({
-  email: yup.string().required("required"),
-  phoneNumber: yup.string().required("required"),
+  email: yup.string().required("verplicht veld").matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email moet geldig zijn'),
+  phoneNumber: yup.string().required("verplicht veld").matches(/^\(?([+]31|0031|0)-?6(\s?|-)([0-9]\s{0,3}){8}$/, 'Telefoonnummer moet geldig zijn'),
 })
 
 export default Checkout;

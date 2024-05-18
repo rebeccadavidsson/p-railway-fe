@@ -59,16 +59,18 @@ const SuccessPage = () => {
                         <p className="text-lg mb-4">Bedankt voor jouw bestelling, {checkoutSession.customer_details.name}! Het zal zo snel mogelijk jouw kant op komen.</p>
                         <div className="bg-gray-100 rounded-lg p-4 mb-4">
                             <p className="text-gray-600 mb-2">Totaal: €{checkoutSession.amount_total / 100}</p>
-                            <div className="mb-2">
-                                <p className="font-semibold">Adres</p>
-                                <p>{checkoutSession.customer_details.address.line1}</p>
-                                <p>{checkoutSession.customer_details.address.postal_code} {checkoutSession.customer_details.address.city}</p>
-                            </div>
-                            {checkoutSession?.shipping &&
+                            {checkoutSession?.customer_details?.address?.postal_code &&
+                                <div className="mb-2">
+                                    <p className="font-semibold">Adres</p>
+                                    <p>{checkoutSession.customer_details.address.line1}</p>
+                                    <p>{checkoutSession.customer_details.address.postal_code} {checkoutSession.customer_details.address.city}</p>
+                                </div>
+                            }
+                            {checkoutSession?.shipping_details?.address?.postal_code &&
                                 <div>
-                                    <p className="font-semibold">Shipping Address</p>
-                                    <p>{checkoutSession.shipping.address.line1}</p>
-                                    <p>{checkoutSession.shipping.address.postal_code} {checkoutSession.shipping.address.city}</p>
+                                    <p className="font-semibold">Verzendingsadres</p>
+                                    <p>{checkoutSession?.shipping_details.address?.line1}</p>
+                                    <p>{checkoutSession?.shipping_details.address?.postal_code} {checkoutSession.shipping_details.address?.city}</p>
                                 </div>
                             }
                         </div>
